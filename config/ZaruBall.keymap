@@ -14,6 +14,9 @@
 #define MOUSE 4
 #define SCROLL 1
 
+// スクロール量の設定
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 100
+
 / {
     conditional_layers {
         compatible = "zmk,conditional-layers";
@@ -27,6 +30,14 @@
 
 / {
     behaviors {
+        // スクロール用のbehaviorの設定
+        scroll_up_down: behavior_sensor_rotate_mouse_wheel_up_down {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&msc SCRL_UP>, <&msc SCRL_DOWN>;
+            tap-ms = <20>; // スクロールのタップ時間
+        };
+
         td0: tap_dance_0 {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
@@ -39,12 +50,6 @@
             #binding-cells = <0>;
             tapping-term-ms = <200>;
             bindings = <&mt RCTL LANG1>, <&mo RAISE>, <&mo 5>;
-        };
-
-        toggle_layer: toggle_layer {
-            compatible = "zmk,behavior-key-toggle";
-            label = "TOGGLE_LAYER";
-            #binding-cells = <1>;
         };
     };
 };
@@ -148,7 +153,7 @@
 
         mouse_layer {
             display-name = "Mouse";
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+            sensor-bindings = <&scroll_up_down>;
             bindings = <
 &to_layer_0 ESC             &to_layer_0 N1  &to_layer_0 N2  &to_layer_0 N3  &to_layer_0 N4      &to_layer_0 N5                   &to_layer_0 N6   &to_layer_0 N7  &to_layer_0 N8  &to_layer_0 N9  &to_layer_0 N0      &to_layer_0 MINUS
 &to_layer_0 TAB             &to_layer_0 Q   &to_layer_0 W   &to_layer_0 E   &to_layer_0 R       &to_layer_0 T                    &kp LG(W)        &to_layer_0 U   &to_layer_0 I   &to_layer_0 O   &to_layer_0 P       &to_layer_0 EQUAL
